@@ -1,0 +1,36 @@
+PagesTable:
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: Page-${self:provider.stage}
+    AttributeDefinitions:
+      - AttributeName: page_id
+        AttributeType: S
+      - AttributeName: site_id
+        AttributeType: S
+      - AttributeName: user_id
+        AttributeType: S
+      - AttributeName: title
+        AttributeType: S
+    KeySchema:
+      - AttributeName: page_id
+        KeyType: HASH
+      - AttributeName: site_id
+        KeyType: RANGE
+    BillingMode: PAY_PER_REQUEST
+    LocalSecondaryIndexes:
+      - IndexName: UserPagesIndex
+        KeySchema:
+          - AttributeName: page_id
+            KeyType: HASH
+          - AttributeName: user_id
+            KeyType: RANGE
+        Projection:
+          ProjectionType: ALL
+      - IndexName: SearchIndex
+        KeySchema:
+          - AttributeName: page_id
+            KeyType: HASH
+          - AttributeName: title
+            KeyType: RANGE
+        Projection:
+          ProjectionType: ALL

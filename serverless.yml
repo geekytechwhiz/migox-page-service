@@ -1,0 +1,118 @@
+service: x-platformx-site-pages-rest-api
+package:
+  individually: false
+plugins:
+  - serverless-auto-swagger
+  - serverless-offline
+  - serverless-deployment-bucket
+  - serverless-webpack
+
+provider:
+  httpApi:
+    cors: true
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'prod'}
+  region: ap-south-1
+  cfLogs: true
+  logRetentionInDays: 1
+  # profile: serverless-admin
+
+  deploymentBucket:
+    name: platformx-site-pages-rest-api-${self:provider.stage}
+    serverSideEncryption: AES256
+  environment:
+    SITE_PAGE_TABLE_NAME: Page-${self:provider.stage}
+    STAGE: ${opt:stage, 'prod'}
+  cors:
+    AllowMethods: "'OPTIONS,GET,POST,PUT,DELETE'"
+    AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key, X-MIBAPI-CustomerType,X-MIBAPI-Trace-Id,X-MIBAPI-CustomerID,X-MIBAPI-Token,X-MIBAPI-Source,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    AllowOrigin: "'*'"
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Page-${self:provider.stage}
+
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+          Resource: arn:aws:s3:::${self:custom.PagesBucket.name}/*
+
+resources:
+  Resources:
+    PagesTable: ${file(infra/resources/dynamodb.yml):PagesTable}
+    PagesBucketPolicy: ${file(infra/resources/s3.yml):PagesBucketPolicy}
+functions:
+  health:
+    handler: src/handlers/health.handler
+    events:
+      - httpApi:
+          method: POST
+          path: /${self:custom.stage}/health
+          bodyType: "Pages"
+          responses:
+            201:
+              description: "health Page response"
+              bodyType: "Pages"
+            500:
+              description: "server error"
+            400:
+              description: "Bad Request"
+
+  create-page:
+    handler: src/handlers/create-page.handler
+    events:
+      - httpApi:
+          method: POST
+          path: /${self:custom.stage}/create-page
+          bodyType: "Users"
+          responses:
+            201:
+              description: "Register User response"
+              bodyType: "Users"
+            500:
+              description: "server error"
+            400:
+              description: "Bad Request"
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  webpack:
+    keepOutputDirectory: true
+    includeModules:
+      packagePath: "./package.json"
+    webpackConfig: "webpack.config.js"
+    packager: "npm"
+    excludeFiles: src/**/*.test.js
+  autoSwagger:
+    typefiles:
+      - "./src/types/api-types.d.ts"
+    host: "https://api.dev.migobucks.com"
+    basePath: "/authorizer/"
+    version: "1.0.0"
+    useStage: true
+
+  domains:
+    dev: api.dev.migobucks.com
+    sit: dev.api.sit.migobucks.com
+    prod: api.migobucks.com
+  PagesTable:
+    name: !Ref PagesTable
+    arn: !GetAtt PagesTable.Arn
+  PagesBucket:
+    name: platformx-site-pages-rest-api-${self:provider.stage}
+  # customDomain:
+  #   domainName: ${self:custom.domains.${self:custom.stage}}
+  #   basePath: 'authorizer'
+  #   endpointType: regional
+  #   apiType: http
+  #   stage: dev
+  #   createRoute53Record: true

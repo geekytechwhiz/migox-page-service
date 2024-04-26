@@ -1,0 +1,31 @@
+export interface ISitePage {
+    site_name: string;
+    title: string;
+    parent_page_url: string;
+    current_page_url: string;
+    page_created_by: string;
+    page_last_modified_by: string;
+    page_last_modification_date: string;
+    page_published_by: string;
+    is_edit: boolean;
+    seo_enable: boolean;
+    analytics_enable: boolean;
+    robot_txt: string;
+    site_map: string;
+    others: string;
+    analytics: string;
+    structure_data: string;
+    page_settings: string;
+    children: any[];
+    content: any;
+    stages: any[];
+    workflow_id: string;
+    workflow_status: string;
+    is_workflow_enabled: boolean;
+    path: string;
+    task_status: string;
+    user_name: string;
+    user_id: string;
+    page_id: string;
+    site_id: string;
+}

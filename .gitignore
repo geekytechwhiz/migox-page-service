@@ -1,0 +1,18 @@
+# package directories
+node_modules
+jspm_packages
+swagger
+
+# Serverless directories
+.serverless
+
+# Webpack directories
+.webpack
+
+.build
+
+package-lock.json
+
+yarn.lock
+
+dist
