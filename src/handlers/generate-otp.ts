@@ -1,7 +1,6 @@
 import { VERIFY_GENERATE_OTP_CONSTRAINTS } from "../constraints";
 import { ResponseMessage } from "../enums/response-message.enum";
 import { StatusCode } from "../enums/status-code.enum";
-import { sendSms } from "../functions/twilioSms";
 import { IGenerateOtp, IOtpDetails, ISendMessageParams } from '../interfaces';
 import ResponseModel from "../models/common/response";
 import GenerateOTPModel from "../models/generateOtpModel";
@@ -31,10 +30,10 @@ const post = async (
       to: `${request.CountryCode}${request.Mobile}`,
       message: `Your Migobucks OTP is ${otpDetails.Otp}`,
     };
-    const res = await sendSms(smsRequest);
-    if (!res) {
-      new ResponseModel("Send SMS Otp Failed", StatusCode.ERROR, ResponseMessage.ERROR);
-    }
+    // const res = await sendSms(smsRequest);
+    // if (!res) {
+    //   new ResponseModel("Send SMS Otp Failed", StatusCode.ERROR, ResponseMessage.ERROR);
+    // }
     let expiryTime = new Date();
     expiryTime.setHours(expiryTime.getHours() + 2);
 
