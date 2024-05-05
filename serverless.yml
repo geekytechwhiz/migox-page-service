@@ -30,7 +30,8 @@ provider:
   environment:
     SITE_PAGE_TABLE_NAME: Page-${self:provider.stage}
     STAGE: ${opt:stage, 'prod'}
-   
+    X_AWS_ACCESS_KEY_ID: AKIA57KPVWYLNALU4KYZ
+    X_AWS_SECRET_ACCESS_KEY: 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
   cors:
     AllowMethods: "'OPTIONS,GET,POST,PUT,DELETE'"
     AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key, X-MIBAPI-CustomerType,X-MIBAPI-Trace-Id,X-MIBAPI-CustomerID,X-MIBAPI-Token,X-MIBAPI-Source,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
