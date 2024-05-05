@@ -1,4 +1,4 @@
-import { ISitePage } from "../interfaces/ISitePage";
+import { ISitePage, Prelem } from "../interfaces/ISitePage";
 
 
 
@@ -28,7 +28,7 @@ export default class SitePageModel {
     private _analytics: string;
     private _structure_data: string;
     private _page_settings: string;
-    private _children: any[];
+    private _children?: Prelem[];
     private _content: any;
     private _stages: any[];
     private _workflow_id: string;
