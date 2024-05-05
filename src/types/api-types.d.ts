@@ -10,19 +10,19 @@ export type ResponseType = {
 }
 
 export type Users = {
-  UserName: "Email" |"Mobile",
-  Mobile?:string;
-  Email?:string;
-  UserRole: "Admin"|"User"|"Customer"|"Buddy";
+  UserName: "Email" | "Mobile",
+  Mobile?: string;
+  Email?: string;
+  UserRole: "Admin" | "User" | "Customer" | "Buddy";
   Password?: string;
   Otp: number;
   UserType: string;
 }
 
 export interface UserRole {
-  UserRole: "Admin"|"User"|"Customer"|"Buddy";
+  UserRole: "Admin" | "User" | "Customer" | "Buddy";
   UserName: string;
-  UserType: string;  
+  UserType: string;
 }
 
 export type OtpDetails = {
@@ -72,17 +72,45 @@ export enum UserType {
   Customer = 'Customer',
 }
 
-export type OtpRequest = {
-  Action?: RequestAction;
-  CountryCode?: string | number;
-  Mobile?: string | number;
-  Message?: string;
-  UserName: string;
-  UserType: UserType;
+export interface IPage {
+  Page: string;
+  SiteName: string;
+  Title: string;
+  ParentPageURL: string;
+  CurrentPageURL: string;
+  DevelopedBy: string;
+  DevelopedDate: string;
+  IsEdit: boolean;
+  SeoEnable: boolean;
+  AnalyticsEnable: boolean;
+  RobotTxt: boolean;
+  SiteMap: boolean;
+  Children: any;
+  Analytics: string;
+  Others: string;
+  StructureData: string[];
+  PageSettings: IPageSettings;
+  Page_LastModificationDate: string;
+  Page_LastModifiedBy: string;
 }
 
-export type VerifyOtpRequest = {
+
+export interface IPageSettings {
+  PageCaching: boolean;
+  PageName: string;
+  IsScheduleUnpublish: boolean;
+  SeoKeywords: string[];
+  Page_State: string;
+  IsSchedulePublish: boolean;
+  SeoBlockIndexing: boolean;
+  PageTags: string[];
+}
+
+export interface IPageResponseModel extends IPage {
+  WorkflowId: string;
+  WorkflowStatus: string;
+  IsWorkflowEnabled: boolean;
+  TaskStatus: string;
   UserName: string;
-  UserType: UserType;
-  Otp: number;
+  UserId: string;
 }

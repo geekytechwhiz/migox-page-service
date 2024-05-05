@@ -1,8 +1,8 @@
 import { POST_USER_CONSTRAINTS } from "../../constraints";
 import { ResponseMessage } from "../../enums/response-message.enum";
 import { StatusCode } from "../../enums/status-code.enum";
-import { IPage } from "../../interfaces/IPage";
-import { CreatePageModel } from "../../models/CreatePageModel";
+import { IPage } from "../../interfaces/SitePage/IPage";
+import { CreatePageModel } from "../../models/site-page/CreatePageModel";
 import ResponseModel from "../../models/common/response";
 import { postSitePage } from '../../services/sitePageService';
 import { wrapAsRequest } from "../../utils/lambda-handler";

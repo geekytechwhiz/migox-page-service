@@ -29,6 +29,7 @@ provider:
     serverSideEncryption: AES256
   environment:
     SITE_PAGE_TABLE_NAME: Page-${self:provider.stage}
+    PRELEMS_TABLE_NAME: Prelems-${self:provider.stage}
     STAGE: ${opt:stage, 'prod'}
     X_AWS_ACCESS_KEY_ID: AKIAXYKJVUR7VEXGAZO5
     X_AWS_SECRET_ACCESS_KEY: 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
@@ -57,6 +58,7 @@ provider:
 resources:
   Resources:
     PagesTable: ${file(infra/resources/dynamodb.yml):PagesTable}
+    PrelemsTable: ${file(infra/resources/dynamodb.yml):PrelemsTable}
     PagesBucketPolicy: ${file(infra/resources/s3.yml):PagesBucketPolicy}
 functions:
   health:
@@ -100,21 +102,21 @@ functions:
             - Page Info
           cors: true
           pathParameters:
-            pageId:
+            page:
               required: true
               type: string
               description: "Name of the path"
-            siteId:
+            siteName:
               required: true
               type: string
               description: "Name of the site"
           responses:
             200:
-              description: "Login response"
-              bodyType: "ResponseType"
+              description: "Draft Page response"
+              bodyType: "IPageResponseModel"
             404:
-              description: "User Not found"
-              bodyType: "ResponseType"
+              description: "Page Not found"
+              bodyType: "IPageResponseModel"
             401:
               description: "Unauthorized"
               bodyType: "ResponseType"

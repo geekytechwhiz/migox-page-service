@@ -34,3 +34,31 @@ PagesTable:
             KeyType: RANGE
         Projection:
           ProjectionType: ALL
+
+PrelemsTable:
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: Prelems-${self:provider.stage}
+    AttributeDefinitions:
+      - AttributeName: PrelemId
+        AttributeType: S
+      - AttributeName: PrelemName
+        AttributeType: S
+      - AttributeName: DevelopedBy
+        AttributeType: S
+
+    KeySchema:
+      - AttributeName: PrelemId
+        KeyType: HASH
+      - AttributeName: PrelemName
+        KeyType: RANGE
+    BillingMode: PAY_PER_REQUEST
+    LocalSecondaryIndexes:
+      - IndexName: DevelopedByIndex
+        KeySchema:
+          - AttributeName: PrelemId
+            KeyType: HASH
+          - AttributeName: DevelopedBy
+            KeyType: RANGE
+        Projection:
+          ProjectionType: ALL

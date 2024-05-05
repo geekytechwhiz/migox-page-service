@@ -12,7 +12,8 @@
     "dev": "serverless deploy --stage dev",
     "prod": "serverless deploy --stage prod",
     "sit": "serverless deploy --stage sit",
-    "build-webpack": "rimraf ./dist && serverless webpack --out dist -d"
+    "build-webpack": "rimraf ./dist && serverless webpack --out dist -d",
+    "build": "serverless package"
   },
   "keywords": [],
   "author": "",

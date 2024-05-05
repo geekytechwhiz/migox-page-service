@@ -1,4 +1,4 @@
-import { IPage, IPageSettings } from "../interfaces/IPage";
+import { IPage, IPageSettings } from "../../interfaces/SitePage/IPage";
 
 export class CreatePageModel {
     page_id: string;
@@ -19,7 +19,7 @@ export class CreatePageModel {
     Analytics: string;
     StructureData: string[];
     PageSettings: IPageSettings;
-    Children: Child[];
+    Children: any[];
     workflow_id: string;
     workflow_status: string;
     is_workflow_enabled: boolean;

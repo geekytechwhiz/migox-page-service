@@ -45,7 +45,6 @@ const documentClient = new AWS.DynamoDB.DocumentClient();
 
 export default class DBContext {
     getItem = async ({
-        key,
         hash,
         hashValue,
         range,

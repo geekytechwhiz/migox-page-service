@@ -1,5 +1,6 @@
 
 export const SITE_PAGE_TABLE_NAME: string = process.env.SITE_PAGE_TABLE_NAME
+export const PRELEMS_TABLE_NAME: string = process.env.PRELEMS_TABLE_NAME
 export const USER_STABLE_DEV: string = "User-dev"
 export const USER_STABLE = "user"
 

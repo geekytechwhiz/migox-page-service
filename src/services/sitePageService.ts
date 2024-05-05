@@ -1,5 +1,5 @@
 import { SITE_PAGE_TABLE_NAME } from '../utils/constants';
-import DBContext, { GetItem, PutItem, QueryItem } from '../utils/dataContext';
+import DBContext, { PutItem, QueryItem } from '../utils/dataContext';
 const dbContext = new DBContext();
 
 export const postSitePage = async (request) => {

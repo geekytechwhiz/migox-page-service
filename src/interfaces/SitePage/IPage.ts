@@ -5,18 +5,18 @@ export interface IPage {
   ParentPageURL: string;
   CurrentPageURL: string;
   DevelopedBy: string;
-  DevelopedDate: string; // Consider using Date type if you're parsing dates
+  DevelopedDate: string;
   IsEdit: boolean;
   SeoEnable: boolean;
   AnalyticsEnable: boolean;
   RobotTxt: boolean;
   SiteMap: boolean;
-  Children: any; // Consider using appropriate type if not always null
+  Children: any;
   Analytics: string;
   Others: string;
   StructureData: string[];
   PageSettings: IPageSettings;
-  Page_LastModificationDate: string; // Consider using Date type if you're parsing dates
+  Page_LastModificationDate: string;
   Page_LastModifiedBy: string;
 }
 
