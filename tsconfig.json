@@ -11,8 +11,9 @@
     ],
     "module": "commonjs",
     "moduleResolution": "node",
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
+    
     "outDir": "lib",
     "sourceMap": true,
     "target": "esnext",

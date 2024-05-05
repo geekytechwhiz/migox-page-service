@@ -1,4 +1,4 @@
-import AWS from "aws-sdk";
+import AWS, { DynamoDB } from "aws-sdk";
 import { ResponseMessage } from "../enums/response-message.enum";
 import { StatusCode } from "../enums/status-code.enum";
 import IConfig from "../interfaces/iConfig";
@@ -26,18 +26,18 @@ export type DeleteItemOutput = AWS.DynamoDB.DocumentClient.DeleteItemOutput;
 type Item = Record<string, string>;
 
 
-const { MIB_STAGE, MIB_AWS_ACCESS_KEY_ID, MIB_AWS_SECRET_ACCESS_KEY } = process.env;
+const { X_STAGE, X_AWS_ACCESS_KEY_ID, X_AWS_SECRET_ACCESS_KEY } = process.env;
 const config: IConfig = {
     region: "ap-south-1",
 };
-config.accessKeyId = MIB_AWS_ACCESS_KEY_ID;
-config.secretAccessKey = MIB_AWS_SECRET_ACCESS_KEY;
+config.accessKeyId = X_AWS_ACCESS_KEY_ID;
+config.secretAccessKey = X_AWS_SECRET_ACCESS_KEY;
 
-if (MIB_STAGE === "local") {
+if (X_STAGE === "local") {
     config.accessKeyId = "";
     config.secretAccessKey = "";
 } else {
-    console.log("running dynamodb on aws on", MIB_STAGE);
+    console.log("running dynamodb on aws on", X_STAGE);
 }
 AWS.config.update(config);
 
@@ -48,28 +48,40 @@ export default class DBContext {
         key,
         hash,
         hashValue,
+        range,
+        rangeValue,
         tableName,
     }: Item): Promise<GetItemOutput> => {
-        const params = {
+        const params: DynamoDB.DocumentClient.GetItemInput = {
             TableName: tableName,
-            Key: {
-                id: key,
-            },
+            Key: {},
         };
-        if (hash) {
-            params.Key[hash] = hashValue;
+
+        // Add the hash key with its value to the Key object
+        params.Key[hash] = hashValue;
+
+        // If range key is provided, add it to the Key object
+        if (range && rangeValue) {
+            params.Key[range] = rangeValue;
         }
-        const results = await this.get(params);
-        if (Object.keys(results).length) {
-            return results;
+
+        try {
+            const { Item } = await this.get(params)
+            console.log('Item', Item)
+            if (Item) {
+                // Return the item if found
+                return Item as GetItemOutput;
+            } else {
+                // If item not found, throw an error
+                throw new Error('Item not found');
+            }
+        } catch (error) {
+            // Handle any errors
+            console.error('Error fetching item:', error);
+            throw error;
         }
-        console.log("item does not exist");
-        throw new ResponseModel(
-            { id: key },
-            StatusCode.NOT_FOUND,
-            ResponseMessage.GET_ITEM_ERROR
-        );
     };
+
 
     existsItem = async ({
         key,

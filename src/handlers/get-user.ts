@@ -1,4 +1,4 @@
-import { GET_CONSTRAINTS } from "../constraints";
+
 import { ResponseMessage } from "../enums/response-message.enum";
 import { StatusCode } from "../enums/status-code.enum";
 import ResponseModel from "../models/common/response";
@@ -14,7 +14,6 @@ const get = async (
     console.log("pathParams", pathParams)
     const { userName, userType } = pathParams;
     const request = { UserName: userName, UserType: userType }
-    await validateRequest(request, GET_CONSTRAINTS);
     const data = await getUserInfo(userName, userType)
 
 

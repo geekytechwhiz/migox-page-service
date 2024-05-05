@@ -1,4 +1,8 @@
-service: x-platformx-site-pages-rest-api
+service: migox-site-pages-rest-api
+frameworkVersion: "3"
+disabledDeprecations:
+  - CODE_1
+  - "*"
 package:
   individually: false
 plugins:
@@ -8,6 +12,7 @@ plugins:
   - serverless-webpack
 
 provider:
+  deploymentMethod: direct
   httpApi:
     cors: true
   name: aws
@@ -16,14 +21,17 @@ provider:
   region: ap-south-1
   cfLogs: true
   logRetentionInDays: 1
+  timeout: 30
   # profile: serverless-admin
 
   deploymentBucket:
-    name: platformx-site-pages-rest-api-${self:provider.stage}
+    name: migox-site-pages-rest-api-${self:provider.stage}
     serverSideEncryption: AES256
   environment:
     SITE_PAGE_TABLE_NAME: Page-${self:provider.stage}
     STAGE: ${opt:stage, 'prod'}
+    X_AWS_ACCESS_KEY_ID: AKIAXYKJVUR7VEXGAZO5
+    X_AWS_SECRET_ACCESS_KEY: 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
   cors:
     AllowMethods: "'OPTIONS,GET,POST,PUT,DELETE'"
     AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key, X-MIBAPI-CustomerType,X-MIBAPI-Trace-Id,X-MIBAPI-CustomerID,X-MIBAPI-Token,X-MIBAPI-Source,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
@@ -67,21 +75,55 @@ functions:
             400:
               description: "Bad Request"
 
-  create-page:
-    handler: src/handlers/create-page.handler
+  edit-page:
+    handler: src/handlers/site-page/edit-page.handler
     events:
       - httpApi:
-          method: POST
+          method: PUT
           path: /${self:custom.stage}/create-page
-          bodyType: "Users"
+          bodyType: "Page"
           responses:
             201:
-              description: "Register User response"
+              description: "Page User response"
               bodyType: "Users"
             500:
               description: "server error"
             400:
               description: "Bad Request"
+  get-draft-page-modal:
+    handler: src/handlers/site-page/fetchDraftPageModal.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /${self:custom.stage}/site-page/{page}/{siteName}
+          swaggerTags:
+            - Page Info
+          cors: true
+          pathParameters:
+            pageId:
+              required: true
+              type: string
+              description: "Name of the path"
+            siteId:
+              required: true
+              type: string
+              description: "Name of the site"
+          responses:
+            200:
+              description: "Login response"
+              bodyType: "ResponseType"
+            404:
+              description: "User Not found"
+              bodyType: "ResponseType"
+            401:
+              description: "Unauthorized"
+              bodyType: "ResponseType"
+            502:
+              description: "server error"
+              bodyType: "ResponseType"
+            400:
+              description: "Bad Request"
+              bodyType: "ResponseType"
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -89,6 +131,8 @@ custom:
     keepOutputDirectory: true
     includeModules:
       packagePath: "./package.json"
+      forceExclude:
+        - aws-sdk
     webpackConfig: "webpack.config.js"
     packager: "npm"
     excludeFiles: src/**/*.test.js
@@ -108,7 +152,7 @@ custom:
     name: !Ref PagesTable
     arn: !GetAtt PagesTable.Arn
   PagesBucket:
-    name: platformx-site-pages-rest-api-${self:provider.stage}
+    name: migox-site-pages-rest-api-${self:provider.stage}
   # customDomain:
   #   domainName: ${self:custom.domains.${self:custom.stage}}
   #   basePath: 'authorizer'

@@ -16,7 +16,8 @@ export interface ISitePage {
     analytics: string;
     structure_data: string;
     page_settings: string;
-    children: Prelem[];
+    // children: Prelem[];
+    children: any[];
     content: any;
     stages: any[];
     workflow_id: string;
@@ -30,71 +31,36 @@ export interface ISitePage {
     site_id: string;
 }
 
-export interface Prelem {
-    PrelemId: string;
-    PrelemName: string;
-    SeoEnabled: boolean;
-    AnalyticsEnabled: boolean;
-    DocumentType: string;
-    DocumentPath: string;
-    DocumentCreationPath: string;
-    IsHidden: boolean;
-    InstanceId: string;
-    IsModified: boolean;
-    StructuredData: string; // JSON string representation
-}
-
-export interface Image {
+interface ImageMetaFields {
+    AltText: string;
     Name: string;
-    Url: string;
     Title: string;
     Description: string;
-    AltText: string;
+    Attribution: boolean;
 }
 
-export interface OriginalImage {
-    original_image_relative_path: string;
-    visibility: string;
-    ext: string;
-    bitStreamId: string;
-    auto: boolean;
-    MetaFields: {
-        AltText: string;
-        Name: string;
-        Title: string;
-        Description: string;
-        Attribution: boolean;
+interface Image {
+    original_image: {
+        original_image_relative_path: string;
+        visibility: string;
+        ext: string;
+        bitStreamId: string;
+        auto: boolean;
+        MetaFields: ImageMetaFields;
+        Url: string;
     };
+    published_images: {
+        aspect_ratio: string;
+        folder_path: string;
+    }[];
 }
 
-export interface PublishedImage {
-    aspect_ratio: string;
-    folder_path: string;
-}
-
-export interface ImageCompound {
-    ImageCompound_1: {
-        original_image: OriginalImage;
-        published_images: PublishedImage[];
-    };
-}
-
-export interface SiteComponent {
-    Button1_Action: string;
-    Button1_Content: string;
-    Button1_Name: string;
-    Button1_RedirectURL: string;
-    Button1_RestEndPoint: string;
-    Button1_Type: string;
-    Button1_Value: string;
+interface SiteComponent {
     Description: string;
-    Images: { Image_1: Image };
     TagName: string;
-    Title1: string;
-    Title2: string;
+    Title: string;
     PrelemContentType: string[];
-    ImageCompound: ImageCompound;
+    ImageCompound: {
+        ImageCompound_1: Image;
+    };
 }
-
-export type DocumentPath = string;
-

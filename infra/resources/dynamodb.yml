@@ -3,24 +3,24 @@ PagesTable:
   Properties:
     TableName: Page-${self:provider.stage}
     AttributeDefinitions:
-      - AttributeName: page_id
+      - AttributeName: Page
         AttributeType: S
-      - AttributeName: site_id
+      - AttributeName: SiteName
         AttributeType: S
       - AttributeName: user_id
         AttributeType: S
       - AttributeName: title
         AttributeType: S
     KeySchema:
-      - AttributeName: page_id
+      - AttributeName: Page
         KeyType: HASH
-      - AttributeName: site_id
+      - AttributeName: SiteName
         KeyType: RANGE
     BillingMode: PAY_PER_REQUEST
     LocalSecondaryIndexes:
       - IndexName: UserPagesIndex
         KeySchema:
-          - AttributeName: page_id
+          - AttributeName: Page
             KeyType: HASH
           - AttributeName: user_id
             KeyType: RANGE
@@ -28,7 +28,7 @@ PagesTable:
           ProjectionType: ALL
       - IndexName: SearchIndex
         KeySchema:
-          - AttributeName: page_id
+          - AttributeName: Page
             KeyType: HASH
           - AttributeName: title
             KeyType: RANGE

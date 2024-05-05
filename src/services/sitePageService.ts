@@ -1,5 +1,5 @@
 import { SITE_PAGE_TABLE_NAME } from '../utils/constants';
-import DBContext, { PutItem } from '../utils/dataContext';
+import DBContext, { GetItem, PutItem, QueryItem } from '../utils/dataContext';
 const dbContext = new DBContext();
 
 export const postSitePage = async (request) => {
@@ -17,4 +17,41 @@ export const postSitePage = async (request) => {
     catch (error) {
         return error;
     }
+}
+
+export const getPageByPath = async (pathName: string, siteName: string) => {
+    try {
+        const params: QueryItem = {
+            TableName: SITE_PAGE_TABLE_NAME,
+            KeyConditionExpression: "page_id = :page_id AND site_id = :site_id",
+            ExpressionAttributeValues: {
+                ":page_id": pathName,
+                ":site_id": siteName
+            },
+        };
+        const results = await dbContext.query(params);
+        return results?.Items
+    }
+    catch (error) {
+        throw new error;
+    }
+
+}
+
+export const fetchPageDraftModal = async (pathName: string, siteName: string) => {
+    try {
+        const params = {
+            hash: 'Page',
+            hashValue: pathName,
+            range: 'SiteName',
+            rangeValue: siteName,
+            tableName: SITE_PAGE_TABLE_NAME,
+        }
+        const result = await dbContext.getItem(params);
+        return result
+    }
+    catch (error) {
+        throw new error;
+    }
+
 }
