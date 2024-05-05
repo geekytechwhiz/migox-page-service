@@ -15,10 +15,9 @@ PagesBucketPolicy:
     Bucket: ${self:custom.PagesBucket.name}
     PolicyDocument:
       Statement:
-        - Sid: PublicRead
+        - Sid: AllActions
           Effect: Allow
           Principal: "*"
-          Action:
-            - s3:GetObject
+          Action: "s3:*"
           Resource:
             - arn:aws:s3:::${self:custom.PagesBucket.name}/*

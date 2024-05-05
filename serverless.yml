@@ -1,8 +1,5 @@
 service: migox-site-pages-rest-api
 frameworkVersion: "3"
-disabledDeprecations:
-  - CODE_1
-  - "*"
 package:
   individually: false
 plugins:
@@ -12,7 +9,7 @@ plugins:
   - serverless-webpack
 
 provider:
-  deploymentMethod: direct
+  # deploymentMethod: direct
   httpApi:
     cors: true
   name: aws
@@ -21,18 +18,20 @@ provider:
   region: ap-south-1
   cfLogs: true
   logRetentionInDays: 1
+  runtimeManagement: auto
   timeout: 30
-  # profile: serverless-admin
+  # profile: x-serverless-admin
 
   deploymentBucket:
     name: migox-site-pages-rest-api-${self:provider.stage}
     serverSideEncryption: AES256
+    blockPublicAccess: false
   environment:
     SITE_PAGE_TABLE_NAME: Page-${self:provider.stage}
     PRELEMS_TABLE_NAME: Prelems-${self:provider.stage}
     STAGE: ${opt:stage, 'prod'}
-    X_AWS_ACCESS_KEY_ID: AKIAXYKJVUR7VEXGAZO5
-    X_AWS_SECRET_ACCESS_KEY: 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
+    X_AWS_ACCESS_KEY_ID: AKIAXYKJVUR72MXJPBFO
+    X_AWS_SECRET_ACCESS_KEY: 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
   cors:
     AllowMethods: "'OPTIONS,GET,POST,PUT,DELETE'"
     AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key, X-MIBAPI-CustomerType,X-MIBAPI-Trace-Id,X-MIBAPI-CustomerID,X-MIBAPI-Token,X-MIBAPI-Source,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
@@ -54,6 +53,11 @@ provider:
           Action:
             - s3:PutObject
           Resource: arn:aws:s3:::${self:custom.PagesBucket.name}/*
+        - Effect: Allow
+          Action:
+            - s3:PutBucketPolicy
+          Resource:
+            - !Sub arn:aws:s3:::${self:custom.PagesBucket.name}
 
 resources:
   Resources:
