@@ -16,7 +16,8 @@ export const SIGN_IN_CONSTRAINTS = {
 }
 
 export const GET_CONSTRAINTS = {
-    UserName: "required",
+    pageId: "required",
+    siteId: "required",
 }
 
 

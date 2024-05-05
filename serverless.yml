@@ -1,4 +1,8 @@
-service: x-platformx-site-pages-rest-api
+service: platformx-site-pages-rest-api
+frameworkVersion: '3'
+disabledDeprecations: 
+ - CODE_1
+ - "*"
 package:
   individually: false
 plugins:
@@ -7,7 +11,8 @@ plugins:
   - serverless-deployment-bucket
   - serverless-webpack
 
-provider:
+provider: 
+  deploymentMethod: direct
   httpApi:
     cors: true
   name: aws
@@ -16,6 +21,7 @@ provider:
   region: ap-south-1
   cfLogs: true
   logRetentionInDays: 1
+  # timeout: 30
   # profile: serverless-admin
 
   deploymentBucket:
@@ -24,6 +30,8 @@ provider:
   environment:
     SITE_PAGE_TABLE_NAME: Page-${self:provider.stage}
     STAGE: ${opt:stage, 'prod'}
+    X_AWS_ACCESS_KEY_ID: AKIA57KPVWYLNALU4KYZ
+    X_AWS_SECRET_ACCESS_KEY: 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
   cors:
     AllowMethods: "'OPTIONS,GET,POST,PUT,DELETE'"
     AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key, X-MIBAPI-CustomerType,X-MIBAPI-Trace-Id,X-MIBAPI-CustomerID,X-MIBAPI-Token,X-MIBAPI-Source,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
@@ -67,29 +75,65 @@ functions:
             400:
               description: "Bad Request"
 
-  create-page:
-    handler: src/handlers/create-page.handler
-    events:
-      - httpApi:
-          method: POST
-          path: /${self:custom.stage}/create-page
-          bodyType: "Users"
-          responses:
-            201:
-              description: "Register User response"
-              bodyType: "Users"
-            500:
-              description: "server error"
-            400:
-              description: "Bad Request"
+  # edit-page:
+  #   handler: src/handlers/site-page/edit-page.handler
+  #   events:
+  #     - httpApi:
+  #         method: PUT
+  #         path: /${self:custom.stage}/create-page
+  #         bodyType: "Page"
+  #         responses:
+  #           201:
+  #             description: "Page User response"
+  #             bodyType: "Users"
+  #           500:
+  #             description: "server error"
+  #           400:
+  #             description: "Bad Request"   
+  # get-page-by-path:
+  #   handler: src/handlers/site-page/getPageByPath.handler 
+  #   events:
+  #     - httpApi:
+  #         method: GET   
+  #         path: /${self:custom.stage}/site-page/{pageId}/{siteId} 
+  #         # swaggerTags: 
+  #         #   - Page Info 
+  #         cors: true         
+  #         pathParameters:
+  #           pageId:
+  #             required: true
+  #             type: string
+  #             description: "Name of the path"
+  #           siteId:
+  #             required: true
+  #             type: string
+  #             description: "Name of the site"
+  #         responses:
+  #           200:
+  #             description: "Login response" 
+  #             bodyType: "ResponseType"
+  #           404: 
+  #             description: 'User Not found'
+  #             bodyType: "ResponseType"
+  #           401: 
+  #             description: 'Unauthorized'
+  #             bodyType: "ResponseType"
+  #           502: 
+  #             description: 'server error'
+  #             bodyType: "ResponseType"
+  #           400: 
+  #             description: "Bad Request"
+  #             bodyType: "ResponseType" 
 
 custom:
-  stage: ${opt:stage, self:provider.stage}
+  stage: ${opt:stage, self:provider.stage} 
   webpack:
     keepOutputDirectory: true
     includeModules:
       packagePath: "./package.json"
-    webpackConfig: "webpack.config.js"
+      forceExclude:
+        - aws-sdk
+    webpackConfig: "webpack.config.js" 
     packager: "npm"
     excludeFiles: src/**/*.test.js
   autoSwagger:
@@ -115,4 +159,4 @@ custom:
   #   endpointType: regional
   #   apiType: http
   #   stage: dev
-  #   createRoute53Record: true
+  #   createRoute53Record: true 

@@ -29,3 +29,37 @@ export interface ISitePage {
     page_id: string;
     site_id: string;
 }
+
+interface ImageMetaFields {
+    AltText: string;
+    Name: string;
+    Title: string;
+    Description: string;
+    Attribution: boolean;
+}
+
+interface Image {
+    original_image: {
+        original_image_relative_path: string;
+        visibility: string;
+        ext: string;
+        bitStreamId: string;
+        auto: boolean;
+        MetaFields: ImageMetaFields;
+        Url: string;
+    };
+    published_images: {
+        aspect_ratio: string;
+        folder_path: string;
+    }[];
+}
+
+interface SiteComponent {
+    Description: string;
+    TagName: string;
+    Title: string;
+    PrelemContentType: string[];
+    ImageCompound: {
+        ImageCompound_1: Image;
+    };
+}

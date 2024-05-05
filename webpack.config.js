@@ -27,18 +27,7 @@ module.exports = {
     filename: '[name].js'
   },
   module: { 
-    rules: [
-        {
-            test: /\.ts$/,
-            enforce: "pre",
-            use: 'string-replace-loader',
-            // options: {
-            //   search: '(System|SystemJS)(.*[\\n\\r]\\s*\\.|\\.)import\\((.+)\\)',
-            //   replace: '$1.import($3).then(mod => mod.__esModule ? mod.default : mod)',
-            //   flags: 'g'
-            // },
-            include: [root('src')]
-          },
+    rules: [ 
       {
         test: /\.ts$/, 
         use: [ 
@@ -46,14 +35,9 @@ module.exports = {
            
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
-      },
+      }, 
     ]
   },
-  plugins: [
-     
+  plugins: [ 
   ],
 };

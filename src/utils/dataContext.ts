@@ -26,18 +26,18 @@ export type DeleteItemOutput = AWS.DynamoDB.DocumentClient.DeleteItemOutput;
 type Item = Record<string, string>;
 
 
-const { MIB_STAGE, MIB_AWS_ACCESS_KEY_ID, MIB_AWS_SECRET_ACCESS_KEY } = process.env;
+const { X_STAGE, X_AWS_ACCESS_KEY_ID, X_AWS_SECRET_ACCESS_KEY } = process.env;
 const config: IConfig = {
     region: "ap-south-1",
 };
-config.accessKeyId = MIB_AWS_ACCESS_KEY_ID;
-config.secretAccessKey = MIB_AWS_SECRET_ACCESS_KEY;
+config.accessKeyId = X_AWS_ACCESS_KEY_ID;
+config.secretAccessKey = X_AWS_SECRET_ACCESS_KEY;
 
-if (MIB_STAGE === "local") {
+if (X_STAGE === "local") {
     config.accessKeyId = "";
     config.secretAccessKey = "";
 } else {
-    console.log("running dynamodb on aws on", MIB_STAGE);
+    console.log("running dynamodb on aws on", X_STAGE);
 }
 AWS.config.update(config);
 
