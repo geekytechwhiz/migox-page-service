@@ -20,7 +20,7 @@ provider:
   logRetentionInDays: 1
   runtimeManagement: auto
   timeout: 30
-  # profile: x-serverless-admin
+  profile: x-serverless-admin
 
   deploymentBucket:
     name: migox-site-pages-rest-api-${self:provider.stage}
