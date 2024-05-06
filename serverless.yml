@@ -15,7 +15,7 @@ provider:
     cors: true
   name: aws
   runtime: nodejs18.x
-  stage: ${opt:stage, 'prod'}
+  stage: ${opt:stage, 'dev'}
   region: ap-south-1
   cfLogs: true
   logRetentionInDays: 1
@@ -30,9 +30,9 @@ provider:
   environment:
     SITE_PAGE_TABLE_NAME: Page-${self:provider.stage}
     PRELEMS_TABLE_NAME: Prelems-${self:provider.stage}
-    STAGE: ${opt:stage, 'prod'}
-    X_AWS_ACCESS_KEY_ID: AKIAXYKJVUR7YBR24RFN
-    X_AWS_SECRET_ACCESS_KEY: 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
+    STAGE: ${opt:stage, 'dev'}
+    # X_AWS_ACCESS_KEY_ID: AKIAXYKJVUR7YBR24RFN
+    # X_AWS_SECRET_ACCESS_KEY: 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
   cors:
     AllowMethods: "'OPTIONS,GET,POST,PUT,DELETE'"
     AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key, X-MIBAPI-CustomerType,X-MIBAPI-Trace-Id,X-MIBAPI-CustomerID,X-MIBAPI-Token,X-MIBAPI-Source,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
