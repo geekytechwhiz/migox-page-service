@@ -7,6 +7,7 @@ plugins:
   - serverless-offline
   - serverless-deployment-bucket
   - serverless-webpack
+  - serverless-iam-roles-per-function
 
 provider:
   # deploymentMethod: direct

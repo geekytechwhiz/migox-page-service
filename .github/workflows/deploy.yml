@@ -12,6 +12,9 @@ jobs:
   build:
     name: Build and Deploy
     runs-on: ubuntu-latest
+    environment: 
+      name: dev
+
 
     steps:
       - name: Checkout code
@@ -28,15 +31,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+    - name: Install Plugin and Deploy
+      uses: serverless/github-action@v3.2
+      with:
+        args: -c "serverless plugin install --name serverless-auto-swagger serverless-iam-roles-per-function serverless-deployment-bucke serverless-webpack && serverless deploy --stage dev"
+        entrypoint: /bin/sh
+
       - name: Build
         run: npm run build
-     
-      - name: Configure AWS credentials
-        run: |
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws configure set region ap-south-1
-          aws configure set profile serverless-dev
-
+      
       - name: Deploy
-        run: npm run dev 
+        run: npm run dev
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
