@@ -15,7 +15,6 @@ jobs:
     environment: 
       name: dev
 
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -31,11 +30,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-    - name: Install Plugin and Deploy
-      uses: serverless/github-action@v3.2
-      with:
-        args: -c "serverless plugin install --name serverless-auto-swagger serverless-iam-roles-per-function serverless-deployment-bucke serverless-webpack && serverless deploy --stage dev"
-        entrypoint: /bin/sh
+      - name: Install Plugin and Deploy
+        uses: serverless/github-action@v3.2
+        with:
+          args: "plugin install --name serverless-auto-swagger serverless-iam-roles-per-function serverless-deployment-bucket serverless-webpack && deploy --stage dev"
 
       - name: Build
         run: npm run build
