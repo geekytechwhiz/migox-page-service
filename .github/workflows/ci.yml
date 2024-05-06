@@ -33,5 +33,4 @@ jobs:
       - name: Install Plugin and Deploy
         uses: serverless/github-action@v3.2
         with:
-          args: "plugin install --name  serverless-deployment-bucket && serverless-webpack && serverless-iam-roles-per-function  && plugin install --name serverless-offline && serverless deploy --stage dev"
-        
+          args: "plugin install --name serverless-deployment-bucket --name serverless-webpack --name serverless-iam-roles-per-function --name serverless-offline && serverless deploy --stage dev"
