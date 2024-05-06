@@ -33,13 +33,13 @@ jobs:
       - name: Install Plugin and Deploy
         uses: serverless/github-action@v3.2
         with:
-          args: "plugin install --name serverless-auto-swagger serverless-iam-roles-per-function serverless-deployment-bucket serverless-webpack && deploy --stage dev"
+          args: "plugin install --name serverless-auto-swagger serverless-iam-roles-per-function serverless-deployment-bucket serverless-webpack && serverless deploy --stage dev"
 
-      - name: Build
-        run: npm run build
+      # - name: Build
+      #   run: npm run build
       
-      - name: Deploy
-        run: npm run dev
+      # - name: Deploy
+      #   run: npm run dev
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
