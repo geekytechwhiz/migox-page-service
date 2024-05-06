@@ -30,7 +30,17 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set region ap-south-1
       
-      - name: Install Plugin and Deploy
-        uses: serverless/github-action@v3.2
-        with:
-           args: -c "serverless plugin install --name serverless-deployment-bucket && serverless plugin install serverless-webpack && serverless plugin install serverless-iam-roles-per-function && serverless plugin install serverless-offline && serverless deploy --stage dev"
+      - name: Install Serverless Deployment Bucket Plugin
+        run: serverless plugin install --name serverless-deployment-bucket
+      
+      - name: Install Serverless Webpack Plugin
+        run: serverless plugin install --name serverless-webpack
+      
+      - name: Install Serverless IAM Roles per Function Plugin
+        run: serverless plugin install --name serverless-iam-roles-per-function
+      
+      - name: Install Serverless Offline Plugin
+        run: serverless plugin install --name serverless-offline
+      
+      - name: Deploy Serverless Application
+        run: serverless deploy --stage dev
