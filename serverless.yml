@@ -63,7 +63,7 @@ resources:
   Resources:
     PagesTable: ${file(infra/resources/dynamodb.yml):PagesTable}
     PrelemsTable: ${file(infra/resources/dynamodb.yml):PrelemsTable}
-    PagesBucketPolicy: ${file(infra/resources/s3.yml):PagesBucketPolicy}
+    # PagesBucketPolicy: ${file(infra/resources/s3.yml):PagesBucketPolicy}
 functions:
   health:
     handler: src/handlers/health.handler
